@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My Waffle ❤️</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Floating Hearts -->
+    <div id="hearts"></div>
+
+    <!-- Background Music -->
+    <audio id="bgMusic" autoplay loop>
+        <source src="music.mp3" type="audio/mp3">
+    </audio>
+
+    <div class="container">
+        <h1>So many flowers but<br>my favourite one is you 🤭</h1>
+
+        <img src="flowers.png" class="flowers">
+
+        <button onclick="openLetter()" class="open-btn">Open Special Letter 💌</button>
+    </div>
+
+    <!-- Popup -->
+    <div class="popup" id="popup">
+        <div class="popup-content">
+            <span class="close" onclick="closeLetter()">&times;</span>
+
+            <img src="yourphoto.jpg" class="selfie">
+
+            <p class="letter">
+              Happy Anniversary babu ❤️<br><br>
+              You mean the world to me and I love you endlessly.<br><br>
+              My Dil Goes Mmmmm ❤️<br><br>
+              Baby, every moment with you feels magical.<br>
+               You make my heart smile in ways I never knew possible.<br><br>
+               I love you more than words can ever say.<br><br>
+                — Your Smolu 💕
+            </p>
+        </div>
+    </div>
+
+<script src="script.js"></script>
+</body>
+</html>

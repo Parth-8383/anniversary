@@ -1,0 +1,112 @@
+body {
+    margin: 0;
+    background: #a9ddff;
+    font-family: "Poppins", sans-serif;
+    overflow-x: hidden;
+    text-align: center;
+}
+
+/* Floating hearts */
+#hearts {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+}
+
+.heart {
+    position: absolute;
+    color: #ff3e7f;
+    font-size: 24px;
+    animation: floatUp 4s linear infinite;
+    opacity: 0.9;
+}
+
+@keyframes floatUp {
+    from { transform: translateY(50vh) scale(0.5); opacity: 1; }
+    to { transform: translateY(-10vh) scale(1.4); opacity: 0; }
+}
+
+/* Main container */
+.container {
+    padding-top: 40px;
+    animation: fadeIn 1s ease-in-out;
+}
+
+h1 {
+    color: white;
+    font-size: 28px;
+    line-height: 1.4;
+    animation: floatText 3s infinite ease-in-out;
+}
+
+.flowers {
+    width: 70%;
+    max-width: 380px;
+    animation: flowerBounce 2.5s infinite ease-in-out;
+}
+
+.open-btn {
+    margin-top: 25px;
+    padding: 16px 35px;
+    background: #ff4fa8;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    font-size: 18px;
+    cursor: pointer;
+    animation: pulseBtn 2s infinite;
+}
+
+/* Popup */
+.popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.4);
+    justify-content: center;
+    align-items: center;
+}
+
+.popup-content {
+    background: white;
+    width: 85%;
+    max-width: 340px;
+    padding: 20px;
+    border-radius: 20px;
+    animation: popIn 0.4s ease;
+    position: relative;
+}
+
+.close {
+    position: absolute;
+    top: 8px;
+    right: 15px;
+    font-size: 28px;
+    cursor: pointer;
+}
+
+.selfie {
+    width: 100%;
+    border-radius: 12px;
+}
+
+.letter {
+    margin-top: 15px;
+    text-align: left;
+    font-size: 17px;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* Animations */
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes floatText { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-6px);} }
+@keyframes flowerBounce { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-12px);} }
+@keyframes pulseBtn { 0%,100%{transform:scale(1);} 50%{transform:scale(1.08);} }
+@keyframes popIn { from{transform:scale(0.7);opacity:0;} to{transform:scale(1);opacity:1;} }
