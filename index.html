@@ -1,61 +1,275 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For My Waffle ❤️</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>For My Waffle ❤️</title>
+
+  <!-- Inline styles to guarantee the popup layout is perfect -->
+  <style>
+    :root{
+      --bg:#a9ddff;
+      --accent:#ff4fa8;
+      --card-bg:#ffffff;
+      --text:#333;
+      --max-popup:480px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background:linear-gradient(180deg, #bfe9ff 0%, #a9ddff 100%);
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      text-align:center;
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:flex-start;
+      padding:28px 16px 60px;
+    }
+
+    /* Header / title */
+    .title{
+      color:white;
+      font-size:28px;
+      font-weight:700;
+      margin:18px 0 22px;
+      text-shadow:0 4px 18px rgba(0,0,0,0.12);
+      line-height:1.15;
+    }
+
+    /* Flowers image */
+    .flowers{
+      width:82%;
+      max-width:460px;
+      display:block;
+      margin: 6px auto 14px;
+      border-radius:14px;
+      box-shadow:0 12px 30px rgba(0,0,0,0.12);
+      animation:flowerBounce 3s ease-in-out infinite;
+    }
+    @keyframes flowerBounce {
+      0%,100%{ transform: translateY(0) }
+      50%{ transform: translateY(-10px) }
+    }
+
+    .open-btn{
+      margin-top:14px;
+      background:var(--accent);
+      border:none;
+      color:white;
+      padding:14px 30px;
+      font-size:18px;
+      border-radius:40px;
+      cursor:pointer;
+      box-shadow:0 8px 20px rgba(255,79,168,0.18);
+      transition: transform .15s ease, box-shadow .15s ease;
+    }
+    .open-btn:active{ transform:scale(.98) }
+    .open-btn:hover{ box-shadow:0 12px 28px rgba(255,79,168,0.26) }
+
+    /* Floating hearts container (keeps hearts behind popup) */
+    #hearts{ position:fixed; inset:0; pointer-events:none; z-index:1; overflow:hidden; }
+
+    .heart{
+      position:absolute;
+      font-size:22px;
+      transform:translateY(0);
+      opacity:0.95;
+      will-change:transform,opacity;
+      z-index:1;
+    }
+
+    /* Popup - centered and responsive */
+    .popup{
+      display:none; /* toggled by JS */
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,0.42);
+      z-index:10;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:20px;
+    }
+
+    .popup-content{
+      width:94%;
+      max-width:var(--max-popup);
+      background:var(--card-bg);
+      border-radius:18px;
+      padding:20px 18px;
+      box-shadow:0 20px 50px rgba(0,0,0,0.25);
+      position:relative;
+      text-align:left;
+      overflow:auto;
+      max-height:90vh;
+    }
+
+    .close{
+      position:absolute;
+      right:12px;
+      top:8px;
+      font-size:26px;
+      color:#666;
+      cursor:pointer;
+      line-height:1;
+    }
+
+    /* Selfie image centered with fixed aspect */
+    .selfie{
+      display:block;
+      width:86%;
+      max-width:340px;
+      height:auto;
+      border-radius:14px;
+      margin:8px auto 14px;
+      object-fit:cover;
+      box-shadow:0 10px 30px rgba(0,0,0,0.12);
+    }
+
+    /* Letter text: use readable size and spacing */
+    .letter{
+      font-size:16px;
+      line-height:1.55;
+      color:var(--text);
+      margin:0;
+      white-space:pre-wrap; /* preserve line breaks if any */
+      word-break:break-word;
+    }
+
+    /* Make inner paragraphs look good */
+    .letter p{ margin:10px 0; }
+
+    /* mobile tuning */
+    @media (min-width:720px){
+      body{ padding-top:48px }
+      .title{ font-size:34px }
+      .open-btn{ font-size:19px }
+      .popup-content{ padding:26px }
+      .letter{ font-size:17px }
+    }
+  </style>
 </head>
 <body>
 
-    <!-- Floating Hearts -->
-    <div id="hearts"></div>
+  <!-- Floating hearts -->
+  <div id="hearts" aria-hidden="true"></div>
 
-    <!-- Background Music -->
-    <audio id="bgMusic" autoplay loop>
-        <source src="music.mp3" type="audio/mp3">
-    </audio>
+  <!-- Background music -->
+  <audio id="bgMusic" autoplay loop>
+    <source src="music.mp3" type="audio/mp3">
+  </audio>
 
-    <div class="container">
-        <h1>So many flowers but<br>my favourite one is you & yours is tulips 🥹💔</h1>
+  <h1 class="title">So many flowers & <br>my favourite one is you but yours is tulips 🥹💔</h1>
 
-        <img src="flowers.png" class="flowers">
+  <img src="flowers.png" alt="bouquet" class="flowers">
 
-        <button onclick="openLetter()" class="open-btn">Open Special Letter 💌</button>
-    </div>
+  <button class="open-btn" onclick="openLetter()">Open Special Letter 💌</button>
 
-    <!-- Popup -->
-    <div class="popup" id="popup">
-        <div class="popup-content">
-            <span class="close" onclick="closeLetter()">&times;</span>
+  <!-- Popup -->
+  <div class="popup" id="popup" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="popup-content" role="document">
+      <button class="close" aria-label="Close" onclick="closeLetter()">×</button>
 
-            <img src="yourphoto.jpg" class="selfie">
+      <!-- selfie -->
+      <img src="yourphoto.jpg" alt="us" class="selfie">
 
-            <p class="letter">
-             Happy Anniversary Babu (My Waffle) ❤️💋<br><br>
+      <!-- letter content (I placed your rewritten romantic letter here) -->
+      <div class="letter" id="letter">
+Happy Anniversary Babu (My Waffle) ❤️💋
 
 Finally our day is here… kabhi socha tha ki main itna pagal ho jaunga tere liye?  
-Par kya karu… tu ho hi itni cute, itni sweet, itni meri… 
-ki zindagi bhar pakad ke rakhna hai tujhe…
-jayegi tu jaha auga mai waha. 🤭💞<br><br>
+Par kya karu… tu ho hi itni cute, itni sweet, itni meri…  
+ki zindagi bhar pakad ke rakhna hai tujhe…  
+jayegi tu jaha auga mai waha. 🤭💞
 
 You mean the entire world to me rii… I love you in ways you can’t even imagine.  
-Tujhe dekhte hi My Dil Goes Mmmmmm 😘🔥<br><br>
+Tujhe dekhte hi My Dil Goes Mmmmmm 😘🔥
 
 Honey… every single moment with you feels magical.  
 You make my heart smile in ways I never knew were possible.  
-You’re my comfort, my chaos, my peace, my everything. 💗✨<br><br>
+You’re my comfort, my chaos, my peace, my everything. 💗✨
 
 I love you more than words, more than time,  
 more than every “I love you” I’ve ever said.  
-I’m yours, always… forever… endlessly. ❤️💋💋<br><br>
+I’m yours, always… forever… endlessly. ❤️💋💋
 
 — Your Smolu 💕
-
-            </p>
-        </div>
+      </div>
     </div>
+  </div>
 
-<script src="script.js"></script>
+  <!-- Inline JS to control popup + hearts + music playback fix on mobile -->
+  <script>
+    /* Popup open/close */
+    const popup = document.getElementById('popup');
+    function openLetter(){
+      popup.style.display = 'flex';
+      popup.setAttribute('aria-hidden','false');
+      // ensure music plays after user interaction on mobile too
+      setTimeout(()=>{ document.getElementById('bgMusic').play().catch(()=>{}); }, 100);
+      // prevent body scroll while popup open
+      document.documentElement.style.overflow = 'hidden';
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLetter(){
+      popup.style.display = 'none';
+      popup.setAttribute('aria-hidden','true');
+      document.documentElement.style.overflow = '';
+      document.body.style.overflow = '';
+    }
+
+    /* generate floating hearts */
+    const heartsRoot = document.getElementById('hearts');
+    function createHeart(){
+      const span = document.createElement('div');
+      span.className = 'heart';
+      span.textContent = '💖';
+      const size = 18 + Math.random()*18;
+      span.style.fontSize = size + 'px';
+      span.style.left = Math.random() * 92 + 'vw';
+      span.style.bottom = '-10vh';
+      const duration = 3500 + Math.random()*3000;
+      span.style.transition = `transform ${duration}ms linear, opacity ${duration}ms linear`;
+      heartsRoot.appendChild(span);
+
+      // animate (translate upward & fade)
+      requestAnimationFrame(()=>{
+        span.style.transform = `translateY(-110vh) scale(${1 + Math.random()*0.8})`;
+        span.style.opacity = '0';
+      });
+
+      // remove after animation
+      setTimeout(()=> span.remove(), duration + 200);
+    }
+    // create hearts steadily
+    const heartsInterval = setInterval(createHeart, 420);
+
+    // play music on first touch/click (fix for phones)
+    function resumeAudio() {
+      const a = document.getElementById('bgMusic');
+      if(a && a.paused) a.play().catch(()=>{});
+      window.removeEventListener('click', resumeAudio);
+      window.removeEventListener('touchstart', resumeAudio);
+    }
+    window.addEventListener('click', resumeAudio);
+    window.addEventListener('touchstart', resumeAudio);
+
+    /* close popup when clicking outside content */
+    popup.addEventListener('click', function(e){
+      if(e.target === popup) closeLetter();
+    });
+
+    /* optional: keyboard support for Esc to close */
+    document.addEventListener('keydown', function(e){
+      if(e.key === 'Escape' && popup.style.display === 'flex'){
+        closeLetter();
+      }
+    });
+  </script>
 </body>
 </html>
