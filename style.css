@@ -75,9 +75,9 @@ h1 {
 
 .popup-content {
     background: white;
-    width: 85%;
-    max-width: 340px;
-    padding: 20px;
+    width: 90%;
+    max-width: 380px;   /* bigger box */
+    padding: 25px;
     border-radius: 20px;
     animation: popIn 0.4s ease;
     position: relative;
